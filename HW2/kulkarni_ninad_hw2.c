@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 		if (successCode == 0 || selectedOption > 2)
 		{
 			while ((getchar()) != '\n');
-			printf("\nSorry, please enter a valid option\n\n");
+			printf("\n**Sorry, please enter a valid option**\n\n");
 			printMenu();
 		}
 	} while(successCode == 0 || selectedOption > 2);
