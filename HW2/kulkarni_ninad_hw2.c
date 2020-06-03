@@ -5,6 +5,7 @@ Description: TODO
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 // Forward Declaration Functions
 int commandLineArgsCheck(int);
@@ -44,30 +45,45 @@ int main(int argc, char** argv)
 	}
 }
 
-void printMenu()
-{
-	printf("Welcome to the CSE240 Assignment 2!\n");
-	printf("Menu:\n");
-	printf("1 - CSE240 Mini-Game Collection\n");
-	printf("2 - Macros vs Functions Throw-down\n");
-	printf("0 - Exit\n");
-	printf("Choose an option: ");
-}
-
 void miniGames(int argc, char** argv)
 {	
-	char name[10];
-	if (argc > 0) {
-		
-	}	
-	//TODO create opponent
-	//generate random num between 0 and number of names in file
-	//read name from file IO
+
+	// File I/O to generate random opponent
+	FILE* randomNamesFile;
+	int randomNum;
+
+	// Control structure to open file and generate random number based on Command Line Argument
+	if (argc > 1)
+	{
+		randomNamesFile = fopen(argv[1], "r");
+		randomNum = rand() % (int)argv[2];
+	} else
+	{
+		randomNamesFile = fopen("random_names.txt", "r");
+		randomNum = rand() % 100;
+	}
+
+	// If the custom file doesn't open, the default random_names.txt file is opened
+	if (randomNamesFile == NULL)
+	{
+		printf("Invalid file name provided. Using default text file: 'random_names.txt'");
+		randomNamesFile = fopen("random_names.txt", "r");
+	}
+
+	// read names from file. skips names till the random number is reached and assigns it to name var.
+	char name[30];
+	int i;
+	for (i = 0; i < randomNum; i++)
+	{
+		fscanf(randomNamesFile, "%s", name);
+	}
+
+	// close file after generating random opponent
+	fclose(randomNamesFile);
+
+	printf("Welcome to CSE240 Mini-Game Collection!\nI am your opponent %s", name);
+	printf("How many rounds should we play? (Choose an odd number)	");
 }
-
-
-
-
 
 
 
@@ -84,4 +100,14 @@ int commandLineArgsCheck(int argc)
 	}
 
 	return 0;
+}
+
+void printMenu()
+{
+	printf("Welcome to the CSE240 Assignment 2!\n");
+	printf("Menu:\n");
+	printf("1 - CSE240 Mini-Game Collection\n");
+	printf("2 - Macros vs Functions Throw-down\n");
+	printf("0 - Exit\n");
+	printf("Choose an option: ");
 }
