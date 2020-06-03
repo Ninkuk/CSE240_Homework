@@ -6,6 +6,7 @@ Description: TODO
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 // Forward Declaration Functions
 int commandLineArgsCheck(int);
@@ -50,12 +51,14 @@ void miniGames(int argc, char** argv)
 
 	// File I/O to generate random opponent
 	FILE* randomNamesFile;
+	srand(time(0));
 	int randomNum;
 
 	// Control structure to open file and generate random number based on Command Line Argument
 	if (argc > 1)
 	{
 		randomNamesFile = fopen(argv[1], "r");
+		printf("%d", (int)argv[2]);
 		randomNum = rand() % (int)argv[2];
 	} else
 	{
@@ -81,7 +84,7 @@ void miniGames(int argc, char** argv)
 	// close file after generating random opponent
 	fclose(randomNamesFile);
 
-	printf("Welcome to CSE240 Mini-Game Collection!\nI am your opponent %s", name);
+	printf("Welcome to CSE240 Mini-Game Collection!\nI am your opponent %s\n", name);
 	printf("How many rounds should we play? (Choose an odd number)	");
 }
 
