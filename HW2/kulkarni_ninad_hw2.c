@@ -135,8 +135,8 @@ void miniGames(int argc, char **argv)
 	// close file after generating random opponent
 	fclose(randomNamesFile);
 
-	printf("\nWelcome to CSE240 Mini-Game Collection!\nI am your opponent %s\n", opponentName);
-	printf("\nHow many rounds should we play? (Choose an odd number)	");
+	printf("\nWelcome to CSE240 Mini-Game Collection!\nI am your opponent %s.\n", opponentName);
+	printf("\nHow many rounds should we play? (Choose an odd number)  ");
 
 	int totalRounds = 0;
 	int successCode = 0; // 0 = invalid input, 1 = valid input
@@ -160,9 +160,8 @@ void miniGames(int argc, char **argv)
 	while (currentRound < totalRounds)
 	{
 		int turnGame = RandomInRange(0, 3);
-		printf("%d", turnGame); //TODO remove
 		int turnResult;
-
+		turnGame = 0;
 		switch (turnGame)
 		{
 		case 0:
@@ -183,7 +182,7 @@ void miniGames(int argc, char **argv)
 		if (turnResult)
 		{
 			playerScore++;
-			printf("You win this round!\n");
+			printf("\nYou win this round!\n");
 		}
 		else
 		{
@@ -191,7 +190,7 @@ void miniGames(int argc, char **argv)
 			printf("\n%s wins this round!\n", opponentName);
 		}
 
-		printf("\nThe score is:\n  Player: %d\n  %s: %d\n\n", playerScore, opponentName, opponentScore);
+		printf("\nThe score is:\n  Player: %d\n  %s: %d\n", playerScore, opponentName, opponentScore);
 
 		if (playerScore == victory || opponentScore == victory)
 			break;
@@ -201,14 +200,14 @@ void miniGames(int argc, char **argv)
 
 	if (playerScore > opponentScore)
 	{
-		printf("Congratulations! You win the game in %d rounds with a score of %d-%d", currentRound, playerScore, opponentScore);
+		printf("\n\nCongratulations! You win the game in %d rounds with a score of %d-%d", currentRound, playerScore, opponentScore);
 	}
 	else
 	{
 		printf("Alas! You lost this round with a score of %d-%d", playerScore, opponentScore);
 	}
 
-	printf("Would you like to continue playing? (0 for no, 1 for yes)  ");
+	printf("\nWould you like to continue playing? (0 for no, 1 for yes)  ");
 	(inputHandlingUpperBound(1, 0, "Please enter a valid response (0 for no, 1 for yes):  ")) ? miniGames(argc, argv) : gameMenu(argc, argv);
 }
 
@@ -231,11 +230,11 @@ int RandomInRange(int min, int max)
 int evensOrOdds(char opponentName[])
 {
 	// Gets the player choice of even or odd
-	printf("\nEven/Odd game!\nGuess even or odd! (0 for even, 1 for odd):  ");
+	printf("\n\nEven/Odd game!\nGuess even or odd! (0 for even, 1 for odd):  ");
 	int playerGuess = inputHandlingUpperBound(1, 0, "Please guess even or odd (0 for even, 1 for odd):  ");
 
 	// Gets the player's number
-	printf("Enter a number (between 0 and 100):	");
+	printf("Enter a number (between 0 and 100):  ");
 	int playerNumber = inputHandlingUpperBound(100, 0, "Please enter a number (between 0 and 100):  ");
 
 	// Generate opponent's number randomly
@@ -271,9 +270,9 @@ int isEven(int number)
 *	0: Player loses and gets 0 points.
 *	1: Player wins and gets 1 point.
 */
-int rockPaperScissors(char opponentName[])
+int rockPaperScissors()
 {
-	printf("\nRock, Paper, Scissors game!\nChoose a throw!\n1. Rock\n2. Paper\n3. Scissors\n");
+	printf("\n\nRock, Paper, Scissors game!\nChoose a throw!\n1. Rock\n2. Paper\n3. Scissors\n");
 
 	int playerThrow = inputHandlingUpperBound(3, 1, "Please throw a valid sign (1. Rock, 2. Paper, 3. Scissors):  ");
 	int opponentThrow = RandomInRange(1, 3);
@@ -305,7 +304,7 @@ int rockPaperScissors(char opponentName[])
 */
 int guessTheNumber()
 {
-	printf("\nNumber Guessing game!\n");
+	printf("\n\nNumber Guessing game!\n");
 
 	// To ensure a unique experience everytime, I made the range and min/max bounds of mystery numbers dynamically random too.
 	int minValue = RandomInRange(0, 500);
@@ -356,8 +355,8 @@ int guessTheNumber()
 int diceRollShowdown(char opponentName[])
 {
 	// Displays the name of the game
-	printf("Number Guessing game!\n");
-	printf("How many sides do the dice have (input a positive number):	");
+	printf("\n\nDice Roll Showdown!\n");
+	printf("How many sides do the dice have (input a positive number):  ");
 
 	// Hypothetically a dice does not have a limit on number of sides and can even be a sphere.
 	int numberOfSides = inputHandling(1, "Please enter a positive number of sides:  ");
@@ -368,7 +367,7 @@ int diceRollShowdown(char opponentName[])
 	printf("Player Rolled:\n");
 	int rollDie = 0; // counter that is incremented until set number of die are rolled
 	int playerDieTotal = 0;
-	while (rollDie > numberOfDice)
+	while (rollDie < numberOfDice)
 	{
 		int dieValue = RollDie(numberOfSides);
 		printf("%d\n", dieValue);
@@ -382,7 +381,7 @@ int diceRollShowdown(char opponentName[])
 	printf("%s Rolled:\n", opponentName);
 	rollDie = 0; // the counter is reset after player's turn
 	int opponentDieTotal = 0;
-	while (rollDie > numberOfDice)
+	while (rollDie < numberOfDice)
 	{
 		int dieValue = RollDie(numberOfSides);
 		printf("%d\n", dieValue);
@@ -421,13 +420,13 @@ int inputHandling(int lowerBound, char errorMessage[])
 	do
 	{
 		successCode = scanf("%d", &selectedOption);
-		if (successCode == 0 || selectedOption > lowerBound)
+		if (successCode == 0 || selectedOption < lowerBound)
 		{
 			while ((getchar()) != '\n')
 				continue;
 			printf("\n%s", errorMessage);
 		}
-	} while (successCode == 0 || selectedOption > lowerBound);
+	} while (successCode == 0 || selectedOption < lowerBound);
 
 	return selectedOption;
 }
@@ -494,13 +493,84 @@ int oddf(int a)
 	}
 }
 
-#define SUB_MACRO(a, b) a - b;
-#define CUBE_MACRO(a) (a) * (a) * (a);
-#define MIN_MACRO(a, b) (a <= b) ? a : b;
-#define ODD_MACRO(a) (a % 2 == 0) ? 0 : 1;
+#define SUB_MACRO(a, b) (a - b)
+#define CUBE_MACRO(a) (a * a * a)
+#define MIN_MACRO(a, b) ((a <= b) ? a : b)
+#define ODD_MACRO(a) ((a % 2 == 0) ? 0 : 1)
 
+/*
+* The results are different in macros than functions for some implementations because macro are direct text replacement and thus execute code as seen without considering the semantics.
+* The differences are in the implementations that increment or decrement the values and the differences are due to the value being changed multiple times instead of once and then passing by as value.
+* In functions, the values are first calculated and then passed through it whereas in macros the values are calculated on run time as the implementation is being executed.
+*/
 void throwDown()
 {
+	printf("\n\nMacro’s vs. Functions Throw-down\n");
+
 	int num1 = 10, num2 = 17;
-	printf("%d", subf(num1, num2));
+	printf("Subtract Function (num1 - num2)\n %d\n\n", subf(num1, num2));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Subtract MACRO (num1 - num2)\n %d\n\n", SUB_MACRO(num1, num2));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Subtract Function (num1++ - num2--)\n %d\n\n", subf(num1++, num2--));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Subtract MACRO (num1++ - num2--)\n %d\n\n", SUB_MACRO(num1++, num2--));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Cube Function (num1)\n %d\n\n", cubef(num1));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Cube MACRO (num1)\n %d\n\n", CUBE_MACRO(num1));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Cube Function (--num1)\n %d\n\n", cubef(--num1));
+
+	/*
+		The result is different in this macro because because num1 is decremented 4 times and then multiplied by the decreased value.
+		Thus the answer is not even a cube of num1 but rather a product of (8*8*7)
+	*/
+	num1 = 10;
+	num2 = 17;
+	printf("Cube MACRO (--num1)\n %d\n\n", CUBE_MACRO(--num1));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Minimum Function (num1, num2)\n %d\n\n", minf(num1, num2));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Minimum MACRO (num1, num2)\n %d\n\n", MIN_MACRO(num1, num2));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Minimum Function (--num1, --num2)\n %d\n\n", minf(--num1, --num2));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Minimum MACRO (--num1, --num2)\n %d\n\n", MIN_MACRO(--num1, --num2));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Odd Function (num1)\n %d\n\n", oddf(num1));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Odd MACRO (num1)\n %d\n\n", ODD_MACRO(num1));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Odd Function (num1++)\n %d\n\n", oddf(num1++));
+
+	num1 = 10;
+	num2 = 17;
+	printf("Odd MACRO (num1++)\n %d\n\n", ODD_MACRO(num1++));
 }
