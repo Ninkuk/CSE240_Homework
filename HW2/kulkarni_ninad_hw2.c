@@ -276,7 +276,6 @@ int rockPaperScissors(char opponentName[])
 	int playerThrow = inputHandlingUpperBound(3, 1, "Please throw a valid sign (1. Rock, 2. Paper, 3. Scissors):  ");
 	int opponentThrow = RandomInRange(1, 3);
 
-	int pointsEarned = 0;
 	switch (opponentThrow)
 	{
 	case 1:
@@ -291,6 +290,10 @@ int rockPaperScissors(char opponentName[])
 	default:
 		break;
 	}
+
+	int pointsEarned = 0;
+	playerThrow--;
+	opponentThrow--;
 
 	if ((playerThrow + 1) % 3 == opponentThrow)
 	{
