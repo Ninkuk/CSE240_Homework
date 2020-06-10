@@ -161,14 +161,13 @@ void miniGames(int argc, char **argv)
 	{
 		int turnGame = RandomInRange(0, 3);
 		int turnResult;
-		turnGame = 0;
 		switch (turnGame)
 		{
 		case 0:
 			turnResult = evensOrOdds(opponentName);
 			break;
 		case 1:
-			turnResult = rockPaperScissors();
+			turnResult = rockPaperScissors(opponentName);
 			break;
 		case 2:
 			turnResult = guessTheNumber();
@@ -270,7 +269,7 @@ int isEven(int number)
 *	0: Player loses and gets 0 points.
 *	1: Player wins and gets 1 point.
 */
-int rockPaperScissors()
+int rockPaperScissors(char opponentName[])
 {
 	printf("\n\nRock, Paper, Scissors game!\nChoose a throw!\n1. Rock\n2. Paper\n3. Scissors\n");
 
@@ -278,6 +277,20 @@ int rockPaperScissors()
 	int opponentThrow = RandomInRange(1, 3);
 
 	int pointsEarned = 0;
+	switch (opponentThrow)
+	{
+	case 1:
+		printf("%s played Rock.", opponentName);
+		break;
+	case 2:
+		printf("%s played Paper.", opponentName);
+		break;
+	case 3:
+		printf("%s played Scissors.", opponentName);
+		break;
+	default:
+		break;
+	}
 
 	if ((playerThrow + 1) % 3 == opponentThrow)
 	{
@@ -285,8 +298,8 @@ int rockPaperScissors()
 	}
 	else if (playerThrow == opponentThrow)
 	{
-		printf("Oh no, that was a draw, Let's play again!");
-		pointsEarned = rockPaperScissors();
+		printf("\nOh no, that was a draw, Let's play again!\n");
+		pointsEarned = rockPaperScissors(opponentName);
 	}
 	else
 	{
@@ -319,7 +332,7 @@ int guessTheNumber()
 
 	while (currentGuess < 6)
 	{
-		printf("\nWhat's guess #%d?", currentGuess);
+		printf("\nWhat's guess #%d? ", currentGuess);
 
 		int playerGuess = inputHandlingUpperBound(maxValue, minValue, "Sorry, please enter a number in the given range: ");
 
@@ -341,7 +354,8 @@ int guessTheNumber()
 	}
 
 	// If the functions hasn't already been terminated yet then that means player ran out of tries and didn't guess the number
-	printf("Sorry you ran out of guesses!");
+	printf("\nSorry you ran out of guesses!");
+	printf("\nThe mystery number was: %d\n", mysteryNumber);
 	return 0;
 }
 
@@ -364,7 +378,7 @@ int diceRollShowdown(char opponentName[])
 	printf("How many dice will each player roll?	");
 	int numberOfDice = inputHandling(1, "Please enter a positive number of die to roll:  ");
 
-	printf("Player Rolled:\n");
+	printf("\nPlayer Rolled:\n");
 	int rollDie = 0; // counter that is incremented until set number of die are rolled
 	int playerDieTotal = 0;
 	while (rollDie < numberOfDice)
@@ -378,7 +392,7 @@ int diceRollShowdown(char opponentName[])
 
 	printf("Total: %d", playerDieTotal);
 
-	printf("%s Rolled:\n", opponentName);
+	printf("\n%s Rolled:\n", opponentName);
 	rollDie = 0; // the counter is reset after player's turn
 	int opponentDieTotal = 0;
 	while (rollDie < numberOfDice)
@@ -392,8 +406,19 @@ int diceRollShowdown(char opponentName[])
 
 	printf("Total: %d", opponentDieTotal);
 
+	int pointsEarned = 0;
+	if (playerDieTotal > opponentDieTotal)
+	{
+		pointsEarned = 1;
+	}
+	else if (playerDieTotal == opponentDieTotal)
+	{
+		printf("\nOh no, that was a draw, Let's play again!\n");
+		pointsEarned = diceRollShowdown(opponentName);
+	}
+
 	// returns the value 1 if player won and 0 if they lost.
-	return ((playerDieTotal > opponentDieTotal) ? 1 : 0);
+	return pointsEarned;
 }
 
 /*
