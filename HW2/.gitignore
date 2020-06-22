@@ -1,1 +1,4 @@
-source
+#The following 3 lines allows git to ignore all binary files aka executable files
+*
+!*/
+!*.*
