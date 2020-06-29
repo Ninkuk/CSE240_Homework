@@ -236,7 +236,7 @@ char evaluateProbability(struct landProbabilities *p) {
 * Purpose: This functions takes the user input and does error handling.
 *          There is no upper limit on the number entered by the user.
 * Return:
-*	selectedOption: Returns the user input that passes all the checks.
+*	selectedOption: Returns the user input that passes all the checks
 */
 int inputHandling() {
     int selectedOption = 0;
