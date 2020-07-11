@@ -4,6 +4,42 @@
 
 #include<iostream>
 
+class Zombie {
+private:
+    char color;
+public:
+    Zombie(); // Default constructor. Assign a color of transparent to the zombie.
+    Zombie(char color); // Creates
+    void setColor(char color);
+
+    char getColor();
+
+    Zombie *operator=(Zombie *);
+
+    friend std::ostream &operator<<(std::ostream &os, const Zombie &zom);
+};
+
+Zombie::Zombie() {
+
+}
+
+Zombie::Zombie(char color) {
+    this->color = color;
+}
+
+void Zombie::setColor(char color) {
+    this->color = color;
+}
+
+char Zombie::getColor() {
+    return this->color;
+}
+
+Zombie *Zombie::operator=(Zombie *zombie) {
+    this->setColor(zombie->getColor());
+    return zombie;
+}
+
 template<class T>
 class Node {
 private:
@@ -273,16 +309,16 @@ Node<T> *LinkedList<T>::retrieve(int index) {
 
 template<class T>
 void LinkedList<T>::printList() {
-//    Node<T> *temp = this->head;
-//    std::cout << "YO";
-//    std::cout << temp->getData() << "\t";
-//
-//    while (temp != this->tail) {
-//        temp = temp->getNext();
-//        std::cout << temp->getData() << "\t";
-//    }
-//
-//    std::cout << std::endl;
+    Node<T> *temp = this->head;
+    std::cout << "YO";
+    std::cout << temp->getData() << "\t";
+
+    while (temp != this->tail) {
+        temp = temp->getNext();
+        std::cout << temp->getData() << "\t";
+    }
+
+    std::cout << std::endl;
 }
 
 template<class T>
@@ -314,34 +350,9 @@ LinkedList<T>::~LinkedList() {
     empty();
 }
 
-class Zombie {
-private:
-    char color;
-public:
-    Zombie(); // Default constructor. Assign a color of transparent to the zombie.
-    Zombie(char color); // Creates
-    void setColor(char color);
-
-    char getColor();
-
-    Zombie *operator=(Zombie *);
-};
-
-Zombie::Zombie(char color) {
-    this->color = color;
-}
-
-void Zombie::setColor(char color) {
-    this->color = color;
-}
-
-char Zombie::getColor() {
-    return this->color;
-}
-
-Zombie *Zombie::operator=(Zombie *zombie) {
-    this->setColor(zombie->getColor());
-    return zombie;
+std::ostream &operator<<(std::ostream &os, const Zombie &zombie) {
+    os << zombie.color;
+    return os;
 }
 
 #endif //HW4_KULKARNI_NINAD_LIST_HPP

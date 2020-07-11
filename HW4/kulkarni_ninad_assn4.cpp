@@ -26,45 +26,69 @@ enum zombieActions {
 };
 
 int main() {
-    std::cout << "Welcome! How many round would you like to run?  " << std::endl;
+    std::cout << "Welcome! How many round would you like to run?  ";
     int numberOfRounds = inputHandling();
 
     // Init empty list
     LinkedList<Zombie> *zombieCongaList = new LinkedList<Zombie>();
+
+    srand(time(0));
 
     // Setup the list
     // 1. Run a Rainbow Brains! Actions
     // 2. Run a random action between 2 and 5
     Zombie *z = new Zombie(getColorChar(rand() % 6));
     rainbowBrains(zombieCongaList, z);
-    int randomAction = rand() % 4 + 2;
+    int randomAction = (rand() % 4) + 2;
+    std::cout << randomAction << std::endl;
     switch (randomAction) {
-        case ENGINE:
+        case 0:
+            std::cout << "bruh0" << std::endl;
             engineAction(zombieCongaList, z);
-        case CABOOSE:
+            break;
+        case 1:
+            std::cout << "bruh1" << std::endl;
             cabooseAction(zombieCongaList, z);
-        case JUMP_IN:
+            break;
+        case 2:
+            std::cout << "bruh2" << std::endl;
             jumpInLineAction(zombieCongaList, z);
-        case EVERYONE_OUT:
+            break;
+        case 3:
+            std::cout << "bruh3" << std::endl;
             everyoneOutAction(zombieCongaList, z);
-        case YOURE_DONE:
+            break;
+        case 4:
+            std::cout << "bruh4" << std::endl;
             youreDoneAction(zombieCongaList, z);
-        case BRAINS:
+            break;
+        case 5:
+            std::cout << "bruh5" << std::endl;
             brainsAction(zombieCongaList, z);
-        case RAINBOW:
+            break;
+        case 6:
+            std::cout << "bruh6" << std::endl;
             rainbowBrains(zombieCongaList, z);
+            break;
         default:
             std::cout << "Oops something went wrong in executing a random action" << std::endl;
             break;
     }
 
-    srand(time(0));
+    std::cout << "works?" << std::endl;
+
+//    zombieCongaList->printList();
 
     int roundCounter = 0;
-    for (roundCounter = 0; roundCounter < numberOfRounds; ++roundCounter) {
+    for (roundCounter = 0; roundCounter < numberOfRounds; roundCounter++) {
+        std::cout << "reached loop" << std::endl;
         Zombie *zombie = new Zombie(getColorChar(rand() % 6));
-        runRandomAction(zombieCongaList, zombie);
+//        runRandomAction(zombieCongaList, zombie);
+        engineAction(zombieCongaList, zombie);
+        std::cout << "loop" << roundCounter << std::endl;
+
 //        zombieCongaList->printList();
+        std::cout << "printedf" << roundCounter << std::endl;
     }
 
     std::cout << "Would you like to continue the party? (y/n)  " << std::endl;
@@ -76,18 +100,25 @@ void runRandomAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
     switch (randomAction) {
         case ENGINE:
             engineAction(zombieCongaList, zombie);
+            break;
         case CABOOSE:
             cabooseAction(zombieCongaList, zombie);
+            break;
         case JUMP_IN:
             jumpInLineAction(zombieCongaList, zombie);
+            break;
         case EVERYONE_OUT:
             everyoneOutAction(zombieCongaList, zombie);
+            break;
         case YOURE_DONE:
             youreDoneAction(zombieCongaList, zombie);
+            break;
         case BRAINS:
             brainsAction(zombieCongaList, zombie);
+            break;
         case RAINBOW:
             rainbowBrains(zombieCongaList, zombie);
+            break;
         default:
             std::cout << "Oops something went wrong in executing a random action" << std::endl;
             break;
@@ -95,27 +126,43 @@ void runRandomAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
 }
 
 void engineAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
+    std::cout << "eng" << std::endl;
+
     zombieCongaList->addToFront(zombie);
+    std::cout << "eng ran" << std::endl;
+
+    std::cout << "size " << zombieCongaList->length();
+    zombieCongaList->printList();
 }
 
 void cabooseAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
+    std::cout << "cab" << std::endl;
+
     zombieCongaList->addToEnd(zombie);
 }
 
 void jumpInLineAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
+    std::cout << "lin" << std::endl;
+
     int randomLocation = rand() % zombieCongaList->length();
     zombieCongaList->addAtIndex(zombie, randomLocation);
 }
 
 void everyoneOutAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
+    std::cout << "out" << std::endl;
+
     zombieCongaList->removeAllOf(zombie);
 }
 
 void youreDoneAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
+    std::cout << "yo" << std::endl;
+
     zombieCongaList->removeTheFirst(zombie);
 }
 
 void brainsAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
+    std::cout << "brain" << std::endl;
+
     Zombie *z2 = new Zombie(zombie->getColor());
     Zombie *z3 = new Zombie(zombie->getColor());
 
@@ -125,6 +172,8 @@ void brainsAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
 }
 
 void rainbowBrains(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
+    std::cout << "rain" << std::endl;
+
     zombieCongaList->addToFront(zombie);
 
     // Add each color zombie to the end
