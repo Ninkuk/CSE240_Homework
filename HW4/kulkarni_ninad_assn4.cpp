@@ -1,7 +1,9 @@
 #include <iostream>
 #include "kulkarni_ninad_list.hpp"
 
-int inputHandling();
+void driverMethod();
+
+int inputHandlingInt();
 
 char getColorChar(int colorInt);
 
@@ -21,18 +23,25 @@ void brainsAction(LinkedList<Zombie> *, Zombie *);
 
 void rainbowBrains(LinkedList<Zombie> *, Zombie *);
 
+void removeHeadAndTail(LinkedList<Zombie> *);
+
 enum zombieActions {
     ENGINE, CABOOSE, JUMP_IN, EVERYONE_OUT, YOURE_DONE, BRAINS, RAINBOW
 };
 
 int main() {
+    srand(time(0));
+    driverMethod();
+}
+
+void driverMethod() {
     std::cout << "Welcome! How many round would you like to run?  ";
-    int numberOfRounds = inputHandling();
+    int numberOfRounds = inputHandlingInt();
+    std::cout << std::endl;
 
     // Init empty list
     LinkedList<Zombie> *zombieCongaList = new LinkedList<Zombie>();
 
-    srand(time(0));
 
     // Setup the list
     // 1. Run a Rainbow Brains! Actions
@@ -40,34 +49,26 @@ int main() {
     Zombie *z = new Zombie(getColorChar(rand() % 6));
     rainbowBrains(zombieCongaList, z);
     int randomAction = (rand() % 4) + 2;
-    std::cout << randomAction << std::endl;
     switch (randomAction) {
         case 0:
-            std::cout << "bruh0" << std::endl;
             engineAction(zombieCongaList, z);
             break;
         case 1:
-            std::cout << "bruh1" << std::endl;
             cabooseAction(zombieCongaList, z);
             break;
         case 2:
-            std::cout << "bruh2" << std::endl;
             jumpInLineAction(zombieCongaList, z);
             break;
         case 3:
-            std::cout << "bruh3" << std::endl;
             everyoneOutAction(zombieCongaList, z);
             break;
         case 4:
-            std::cout << "bruh4" << std::endl;
             youreDoneAction(zombieCongaList, z);
             break;
         case 5:
-            std::cout << "bruh5" << std::endl;
             brainsAction(zombieCongaList, z);
             break;
         case 6:
-            std::cout << "bruh6" << std::endl;
             rainbowBrains(zombieCongaList, z);
             break;
         default:
@@ -75,26 +76,43 @@ int main() {
             break;
     }
 
-    std::cout << "works?" << std::endl;
-
-//    zombieCongaList->printList();
-
     int roundCounter = 0;
     for (roundCounter = 0; roundCounter < numberOfRounds; roundCounter++) {
-        std::cout << "reached loop" << std::endl;
-        Zombie *zombie = new Zombie(getColorChar(rand() % 6));
-//        runRandomAction(zombieCongaList, zombie);
-        engineAction(zombieCongaList, zombie);
-        std::cout << "loop" << roundCounter << std::endl;
+        std::cout << "************************************************" << std::endl;
+        std::cout << "Round: " << roundCounter + 1 << std::endl;
+        std::cout << "The zombie party keeps on groaning!" << std::endl;
+        std::cout << "Size: " << zombieCongaList->length() << " :: ";
+        zombieCongaList->printList();
 
-//        zombieCongaList->printList();
-        std::cout << "printedf" << roundCounter << std::endl;
+        Zombie *zombie = new Zombie(getColorChar(rand() % 6));
+        runRandomAction(zombieCongaList, zombie);
+
+        std::cout << "The conga line is now:" << std::endl;
+        std::cout << "Size: " << zombieCongaList->length() << " :: ";
+        zombieCongaList->printList();
+        std::cout << "************************************************" << std::endl;
+
+        if (roundCounter % 5 == 0) {
+            removeHeadAndTail(zombieCongaList);
+            std::cout << "The conga line is now:" << std::endl;
+            std::cout << "Size: " << zombieCongaList->length() << " :: ";
+            zombieCongaList->printList();
+        }
     }
 
-    std::cout << "Would you like to continue the party? (y/n)  " << std::endl;
-    return 0;
+    std::cout << "Would you like to continue the party? (y/n)  ";
+    char selectedOption = '0';
+    scanf(" %c", &selectedOption);
+
+    if (selectedOption == 'y') {
+        std::cout << std::endl;
+        driverMethod();
+    } else {
+        std::cout << "Invalid input. Exiting code";
+    }
 }
 
+// Generates a random number between 0 and 7 and executes a zombie action corresponding to it.
 void runRandomAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
     int randomAction = rand() % 7;
     switch (randomAction) {
@@ -125,55 +143,56 @@ void runRandomAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
     }
 }
 
+// This zombie becomes the first Zombie in the conga line
 void engineAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
-    std::cout << "eng" << std::endl;
-
     zombieCongaList->addToFront(zombie);
-    std::cout << "eng ran" << std::endl;
 
-    std::cout << "size " << zombieCongaList->length();
-    zombieCongaList->printList();
+    std::cout << zombie->getColor() << " zombie jumps in the front of the line! (ENGINE)" << std::endl;
 }
 
+// This zombie becomes the last zombie in the conga line
 void cabooseAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
-    std::cout << "cab" << std::endl;
-
     zombieCongaList->addToEnd(zombie);
+
+    std::cout << zombie->getColor() << " zombie jumps in the back of the line! (CABOOSE)" << std::endl;
 }
 
+// This zombie joins the conga line at position X where X <= length of the linked list
 void jumpInLineAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
-    std::cout << "lin" << std::endl;
-
     int randomLocation = rand() % zombieCongaList->length();
     zombieCongaList->addAtIndex(zombie, randomLocation);
+
+    std::cout << zombie->getColor() << " zombie jumps in the line at " << randomLocation << " location! (JUMP IN LINE)"
+              << std::endl;
 }
 
+// Remove all matching zombies from the linked list
 void everyoneOutAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
-    std::cout << "out" << std::endl;
-
     zombieCongaList->removeAllOf(zombie);
+
+    std::cout << "All " << zombie->getColor() << " zombies have left the chat! (EVERYONE OUT)" << std::endl;
 }
 
+// Remove the first matching zombie from the linked list
 void youreDoneAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
-    std::cout << "yo" << std::endl;
-
     zombieCongaList->removeTheFirst(zombie);
+    std::cout << "The first " << zombie->getColor() << " zombie has left the chat! (YOU'RE DONE BUB)" << std::endl;
 }
 
+// Generate two more matching Zombies and add one to the front, one to the end and one to the middle
 void brainsAction(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
-    std::cout << "brain" << std::endl;
-
     Zombie *z2 = new Zombie(zombie->getColor());
     Zombie *z3 = new Zombie(zombie->getColor());
 
     zombieCongaList->addToFront(zombie);
     zombieCongaList->addToEnd(z2);
     zombieCongaList->addAtIndex(z3, zombieCongaList->length() / 2);
+
+    std::cout << zombie->getColor() << " zombie brings its friends! (BRAINS!)" << std::endl;
 }
 
+// Add this zombie to the front, then add one of each zombie color to the end of the conga line.
 void rainbowBrains(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
-    std::cout << "rain" << std::endl;
-
     zombieCongaList->addToFront(zombie);
 
     // Add each color zombie to the end
@@ -183,13 +202,19 @@ void rainbowBrains(LinkedList<Zombie> *zombieCongaList, Zombie *zombie) {
     zombieCongaList->addToEnd(new Zombie('B'));
     zombieCongaList->addToEnd(new Zombie('M'));
     zombieCongaList->addToEnd(new Zombie('C'));
+
+    std::cout << zombie->getColor() << " zombie brought a whole party! (RAINBOW BRAINS!)" << std::endl;
 }
 
+// This function is used when head and tail needs to be removed every 5 rounds
 void removeHeadAndTail(LinkedList<Zombie> *zombieCongaList) {
     zombieCongaList->removeFromFront();
     zombieCongaList->removeFromEnd();
+
+    std::cout << "Head and Tail zombies removed after every 5 moves!" << std::endl;
 }
 
+// Returns a color char based on the random number passed in
 char getColorChar(int colorInt) {
     switch (colorInt) {
         case 0:
@@ -215,7 +240,7 @@ char getColorChar(int colorInt) {
 * Return:
 *	selectedOption: Returns the user input that passes all the checks
 */
-int inputHandling() {
+int inputHandlingInt() {
     int selectedOption = 0;
     int successCode = 0; // 0 = invalid input, 1 = valid input
     do {

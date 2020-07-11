@@ -16,30 +16,35 @@ public:
 
     Zombie *operator=(Zombie *);
 
-    friend std::ostream &operator<<(std::ostream &os, const Zombie &zom);
+    friend std::ostream &operator<<(std::ostream &os, const Zombie &zombie);
 };
 
 Zombie::Zombie() {
-
+    // does nothing
 }
 
+// Constructor used to assign the value of color
 Zombie::Zombie(char color) {
     this->color = color;
 }
 
+// This setter can set a new value of color.
 void Zombie::setColor(char color) {
     this->color = color;
 }
 
+// Used to get the color of zombie
 char Zombie::getColor() {
     return this->color;
 }
 
+// Overloading the = operator to assign the new color to the zombie
 Zombie *Zombie::operator=(Zombie *zombie) {
     this->setColor(zombie->getColor());
     return zombie;
 }
 
+// Node class. Stores the zombie object within it. Also contains the pointer to the next node.
 template<class T>
 class Node {
 private:
@@ -47,45 +52,52 @@ private:
     Node<T> *nextNode;
 public:
     Node(); // Default constructor.
-    Node(T *data); //
+    Node(T *data); // Used to assign the data
     ~Node(); //
     void setNext(Node<T> *node); //
     Node<T> *getNext(); //
     T getData();
 };
 
+// Initializes an empty node. Never used.
 template<class T>
 Node<T>::Node() {
     this->data = nullptr;
     this->nextNode = nullptr;
 }
 
+// Initializes the node and assigns the data.
 template<class T>
 Node<T>::Node(T *data) {
     this->data = *data;
     this->nextNode = nullptr;
 }
 
+// Destructor
 template<class T>
 Node<T>::~Node<T>() {
 //    delete data;
 }
 
+// Sets the next node. By default the next pointer is null until explicitly set.
 template<class T>
 void Node<T>::setNext(Node<T> *node) {
     nextNode = node;
 }
 
+// Gets the pointer to the next node. Null is returned if the node is a tail.
 template<class T>
 Node<T> *Node<T>::getNext() {
     return nextNode;
 }
 
+// Returns the zombie object data
 template<class T>
 T Node<T>::getData() {
     return data.getColor();
 }
 
+// Linked List class
 template<class T>
 class LinkedList {
 private:
@@ -159,6 +171,7 @@ bool LinkedList<T>::addAtIndex(T *data, int index) {
         temp = temp->getNext();
     }
     Node<T> *newNode = new Node<T>(data);
+    newNode->setNext(temp->getNext());
     temp->setNext(newNode);
     return true;
 }
@@ -310,12 +323,11 @@ Node<T> *LinkedList<T>::retrieve(int index) {
 template<class T>
 void LinkedList<T>::printList() {
     Node<T> *temp = this->head;
-    std::cout << "YO";
-    std::cout << temp->getData() << "\t";
+    std::cout << "[" << temp->getData() << "]" << "\t";
 
     while (temp != this->tail) {
         temp = temp->getNext();
-        std::cout << temp->getData() << "\t";
+        std::cout << "[" << temp->getData() << "]" << "\t";
     }
 
     std::cout << std::endl;
